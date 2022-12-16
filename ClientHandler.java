@@ -5,6 +5,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ClientHandler implements Runnable{ //fait la lecture 
@@ -16,6 +19,7 @@ public class ClientHandler implements Runnable{ //fait la lecture
     public ClientHandler(Socket socket,List<Socket> lesClients,String username){
         this.client = socket;
         this.clientsConnectees = lesClients;
+        this.username_client = username;
     }
 
     public void addClient(Socket client){
@@ -26,7 +30,10 @@ public class ClientHandler implements Runnable{ //fait la lecture
     public void sendMessage(String username,String message){
         try{
             if(!(message.equals(""))){
-                String leMessage = username+" : "+message;
+                LocalDateTime date = LocalDateTime.now();
+                DateTimeFormatter datee = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                String dateFormatee = date.format(datee);
+                String leMessage = "[" + dateFormatee + "] " + username+" : "+message;
                 for (Socket clients :clientsConnectees){
                     if (clients!=client){
                     PrintWriter writer = new PrintWriter(clients.getOutputStream());

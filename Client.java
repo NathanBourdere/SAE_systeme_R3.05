@@ -33,7 +33,19 @@ public class Client{
 
     public void lire() throws IOException{
         String message = lecteur.readLine();
-        System.out.println(message);
+        try{
+            if(message.equals("null")){
+                this.socket.close();
+                System.out.println("Vous avez été deconnecté");
+                System.exit(0);
+            }
+            System.out.println(message);
+        }
+        catch(Exception e){
+            this.socket.close();
+            System.out.println("Vous avez été deconnecté");
+            System.exit(0);
+        }
     }
     public Socket getSocket(){
         return this.socket;
@@ -62,7 +74,6 @@ public class Client{
             PrintWriter writer = new PrintWriter(client.socket.getOutputStream());
             InputStreamReader stream = new InputStreamReader(client.socket.getInputStream());
             BufferedReader reader = new BufferedReader(stream);
-            writer.println("Hellow world!");
             writer.flush();
             // while (true){
             // writer.println(sc.nextLine());

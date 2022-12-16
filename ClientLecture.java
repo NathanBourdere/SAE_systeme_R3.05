@@ -16,8 +16,8 @@ public void run(){
             this.client.lire();
         }
     }
-    catch(IOException e){
-        e.printStackTrace();
+    catch(Exception e){
+
     }
 }
 }
