@@ -11,8 +11,9 @@ public class ClientHandler implements Runnable{ //fait la lecture
 
     private Socket client;
     private List<Socket> clientsConnectees;
+    private String username_client;
 
-    public ClientHandler(Socket socket,List<Socket> lesClients){
+    public ClientHandler(Socket socket,List<Socket> lesClients,String username){
         this.client = socket;
         this.clientsConnectees = lesClients;
     }
@@ -26,10 +27,12 @@ public class ClientHandler implements Runnable{ //fait la lecture
         try{
             if(!(message.equals(""))){
                 String leMessage = username+" : "+message;
-                for (Socket client :clientsConnectees){
-                    PrintWriter writer = new PrintWriter(client.getOutputStream());
+                for (Socket clients :clientsConnectees){
+                    if (clients!=client){
+                    PrintWriter writer = new PrintWriter(clients.getOutputStream());
                     writer.println(leMessage);
                     writer.flush();
+                    }
                 }
 
             }
@@ -43,12 +46,11 @@ public class ClientHandler implements Runnable{ //fait la lecture
         InputStreamReader stream = new InputStreamReader(this.client.getInputStream());
         BufferedReader reader = new BufferedReader(stream);
         while(true){
-            System.out.println(this.client);
+            //System.out.println(this.client);
                 String message = reader.readLine();
                 OutputStream os = client.getOutputStream(); 
-                PrintWriter writer = new PrintWriter(os);
-                writer.println("feur");
-                writer.flush();
+                this.sendMessage(this.username_client, message);
+                
         }
     }
              catch (IOException e) {

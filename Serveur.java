@@ -10,20 +10,19 @@ public class Serveur {
     public static void main(String[] args) {
         try {
             List<Socket> sockets = new ArrayList<>();
-            // while (true) {
-                ServerSocket serverSock = new ServerSocket(4444);
+            ServerSocket serverSock = new ServerSocket(4444);
+            while (true) {
                 Socket clientSocket = serverSock.accept();
                 sockets.add(clientSocket);
-                Thread t = new Thread(new ClientHandler(clientSocket,sockets));
-                t.start();
                 PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
                 InputStreamReader stream = new InputStreamReader(clientSocket.getInputStream());
                 BufferedReader reader = new BufferedReader(stream);
                 String message = reader.readLine();
-                System.out.println(message);
+                Thread t = new Thread(new ClientHandler(clientSocket,sockets,message));
+                t.start();
                 writer.println(message);
                 writer.flush();
-            // }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

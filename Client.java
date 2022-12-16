@@ -32,13 +32,16 @@ public class Client{
     }
 
     public void lire() throws IOException{
-        String message = this.lecteur.readLine();
+        String message = lecteur.readLine();
         System.out.println(message);
     }
     public Socket getSocket(){
         return this.socket;
     }
-    public void ecriture(){
+    public String getUsername(){
+        return this.username;
+    }
+    public void startClient(){
         this.clientlirek = new ClientLecture(this);
         this.clientlirek.start();
         while(this.socket.isConnected()){
@@ -50,13 +53,14 @@ public class Client{
     }
     public static void main(String[] args) {
         try {
-            // System.out.println("Donnez l'adresse IP du serveur : ");
-            // Scanner sc = new Scanner(System.in);
-            // String ipserveur = sc.nextLine();
+            System.out.println("Donnez votre nom : ");
+            Scanner sc = new Scanner(System.in);
+            String nom = sc.nextLine();
             // System.out.println("Serveur choisi : "+ipserveur);
-            Socket socket = new Socket("localhost", 4444);
-            PrintWriter writer = new PrintWriter(socket.getOutputStream());
-            InputStreamReader stream = new InputStreamReader(socket.getInputStream());
+            Client client = new Client();
+            client.connectTo("localhost",4444,nom);
+            PrintWriter writer = new PrintWriter(client.socket.getOutputStream());
+            InputStreamReader stream = new InputStreamReader(client.socket.getInputStream());
             BufferedReader reader = new BufferedReader(stream);
             writer.println("Hellow world!");
             writer.flush();
@@ -64,6 +68,7 @@ public class Client{
             // writer.println(sc.nextLine());
             // writer.flush();
             // }
+            client.startClient();
             String message = reader.readLine();
             System.out.println(message);
         } catch (Exception e) {
