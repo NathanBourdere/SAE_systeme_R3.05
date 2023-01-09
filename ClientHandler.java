@@ -31,14 +31,14 @@ public class ClientHandler implements Runnable{ //fait la lecture
         try{
             if(!(message.equals(""))){
                 LocalDateTime date = LocalDateTime.now();
-                DateTimeFormatter datee = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-                String dateFormatee = date.format(datee);
+                DateTimeFormatter formatteddate = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                String dateFormatee = date.format(formatteddate);
                 String leMessage = "[" + dateFormatee + "] " + username+" : "+message;
                 for (Socket clients :clientsConnectees){
                     if (clients!=client){
-                    PrintWriter writer = new PrintWriter(clients.getOutputStream());
-                    writer.println(leMessage);
-                    writer.flush();
+                        PrintWriter writer = new PrintWriter(clients.getOutputStream());
+                        writer.println(leMessage);
+                        writer.flush();
                     }
                 }
 

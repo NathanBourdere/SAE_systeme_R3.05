@@ -4,6 +4,9 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Client{
@@ -81,7 +84,11 @@ public class Client{
             // }
             client.startClient();
             String message = reader.readLine();
-            System.out.println(message);
+            LocalDateTime date = LocalDateTime.now();
+            DateTimeFormatter datee = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+            String dateFormatee = date.format(datee);
+            String leMessage = "[" + dateFormatee + "] " + nom+" : "+message;
+            //System.out.println(leMessage);
         } catch (Exception e) {
             e.printStackTrace();
         }
